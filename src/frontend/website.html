@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send a message</title>
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        #chat {
+            height: 80vh;
+            border: 1px solid #fff;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        function askMessage() {
+            const message = document.getElementById('message').value;
+            const chat = document.getElementById('chat');
+            chat.innerHTML += `<div class="message"><strong>You:</strong> ${message}</div>`;
+            fetch(`http://localhost:3000/send-message?message=${encodeURIComponent(message)}`)
+                .then(response => response.json())
+                .then(data => {
+                    chat.innerHTML += `<div class="message"><strong>Bot:</strong> ${data.answer}</div>`;
+                    chat.scrollTop = chat.scrollHeight;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            return false; // Prevent form from submitting normally
+        }
+    </script>
+</head>
+<body>
+    <div id="chat"></div>
+    <form onsubmit="return askMessage();">
+        <input type="text" id="message" placeholder="Send a message">
+        <input type="submit" value="Send">
+    </form>
+</body>
+</html>
