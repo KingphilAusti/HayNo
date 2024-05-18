@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,58 +35,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.chatContainer {
-  border: 1px solid #000000;
-  border-radius: 5px;
-
-  .chatBubble {
-    background-color: #353434;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
-    position: relative;
-    max-width: 60%;
-
-    &__user {
-      float: right;
-      text-align: right;
-    }
-    &__assistant {
-      float: left;
-      text-align: left;
-    }
-  }
-}
-
-.rightBubble {
-  background-color: #353434;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px;
-  position: relative;
-  max-width: 60%;
-  float: right;
-  clear: both;
-}
-
-.inputContainer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  padding: 10px;
-  /* background-color: #fff; */
-  border-top: 1px solid #ccc;
-  text-align: center;
-}
-
-.inputTextField {
-  width: 80%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #353434;
-  margin-right: 10px;
-  color: white;
-}
+} */
