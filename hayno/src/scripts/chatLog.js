@@ -3,7 +3,7 @@ class ChatLog {
         this.log = log;
     }
     add(role, content) {
-        this.log.unshift({ 
+        this.log.push({ 
             role: role, 
             content: content,
             number: this.log.length + 1
@@ -17,13 +17,13 @@ class ChatLog {
         };
     }
     updateLastEntry(content) {
-        this.log[0].content = content;
+        this.log[this.log.length - 1].content = content;
     }
     get() {
         return this.log;
     }
     first() {
-        return this.log[0] || '';
+        return this.log[this.log.length - 1] || '';
     }
     clear() {
         this.log = [];
