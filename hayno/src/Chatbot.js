@@ -72,7 +72,7 @@ function Chatbot() {
     }, [chatLog, updateCall]);
 
     return (
-        <div>
+        <div className='window'>
             <div className='chat-container'>
                 <div id="chat">
                     <ul className='chat'>
@@ -80,7 +80,7 @@ function Chatbot() {
                             <li className={alignMessage(msg.role)}>
                             <img className="logo" src={getAvatar(msg.role)} alt=""></img>
                             <p key={index}>
-                                <strong>{msg.role}:</strong> {msg.content}
+                                {msg.content}
                             </p>
                             </li>
                         ))}
@@ -93,6 +93,13 @@ function Chatbot() {
                     </form>
                 </div>
             </div>
+            
+            <div>
+                    <form className='embedSubmitField' onSubmit={(e) => { e.preventDefault(); askMessage(); }}>
+                        <input className='text_input' type="text" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Send a message" />
+                        {/* <button type="submit" value="Send">Send</button> */}
+                    </form>
+                </div>
         </div>
     );
 }
