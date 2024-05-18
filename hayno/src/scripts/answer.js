@@ -3,18 +3,23 @@ const openai = new OpenAI({ apiKey: process.env.REACT_APP_OPENAI_API_KEY, danger
 
 async function processMessage(chatLog) {
     try {
+        let response = '';
         switch (chatLog.first().content.split(' ')[0].toLowerCase()) {
             case '/help':
-                return 'You can ask me anything you want.  Here is a list of commands you can use:  /help, /search, /searchDatabase';
+                response = 'You can ask me anything you want.  Here is a list of commands you can use:  /help, /search, /searchDatabase';
+                break;
             case '/search':
             case '/searchDatabase':
-                return 'Database search is not yet implemented.';
+                response = 'Database search is not yet implemented.';
+                break;
             case '/clear':
                 chatLog.clear();
-                return 'Chat history has been cleared.';
+                response = 'Chat history has been cleared.';
+                break;
             default:
                 return await getAnswer(chatLog);
         }
+        return response.split(' ');
     } catch (error) {
         console.error(error);
         return 'Message not splittable.';
