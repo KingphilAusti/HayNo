@@ -74,11 +74,11 @@ h2 {
 	margin-bottom: 30px;
 }
 
-.message.left {
+.message.assistant {
 	padding: 15px 20px 15px 70px;
 }
 
-.message.right {
+.message.user {
 	align-self: flex-end;
 	padding: 15px 70px 15px 20px;
 }
@@ -94,7 +94,7 @@ h2 {
 	height: 50px;
 }
 
-.message.right .logo {
+.message.user .logo {
 	left: auto;
 	right: 10px;
 }

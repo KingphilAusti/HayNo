@@ -10,7 +10,6 @@ function Chatbot() {
     const [chatLog, setChatLog] = useState((chatLog) => new ChatLog(chatLog));
     const [updateCall, setUpdateCall] = useState('');
 
-
     const askMessage = () => {
         try {
             const newChatLog = new ChatLog(chatLog.log);
@@ -23,14 +22,7 @@ function Chatbot() {
     };
 
     const alignMessage = (role) => {
-        switch (role) {
-            case 'user':
-                return 'message right';
-            case 'assistant':
-                return 'message left';
-            default:
-                return '';
-        }
+        return 'message ' + role;
     }
 
     const getAvatar = (role) => {
@@ -44,30 +36,14 @@ function Chatbot() {
         }
     }
 
-    useEffect( () => {
-        const processStringStream = async (stream) => {
-            // setAnswer('');
-            const newChatLog = new ChatLog(chatLog.log);
-            var currentAnswer = '';
-            if (stream.iterator) {
-                newChatLog.add('assistant', 'Processing...');
-                for await (const part of stream) {
-                    currentAnswer += part.choices[0]?.delta?.content || '';
-                    setUpdateCall(currentAnswer);
-                    newChatLog.updateLastEntry(currentAnswer);
-                    setChatLog(newChatLog);
-                }
-            } else {
-                console.error('Stream is not iterable');
-            };
-        };
-
+    useEffect( () => { 
+    const states = { message, setMessage, chatLog, setChatLog, updateCall, setUpdateCall};
         if (chatLog.first() && chatLog.first().role === 'user') try {
-            processMessage(chatLog).then((response) => {processStringStream(response);});
+            processMessage(chatLog, states);
         }  catch (error) {
             console.error(error);
         }
-    }, [chatLog, updateCall]);
+    }, [message, chatLog, updateCall]);
 
     return (
         <div className='window'>
@@ -76,21 +52,21 @@ function Chatbot() {
                     <ul className='chat'>
                         {chatLog.log.map((msg, index) => (
                             <li className={alignMessage(msg.role)}>
-                            <img className="logo" src={getAvatar(msg.role)} alt=""></img>
-                            <p key={index}>
-                                {msg.content}
-                            </p>
+                                <img className="logo" src={getAvatar(msg.role)} alt=""></img>
+                                <p key={index}>
+                                    {msg.content}
+                                </p>
                             </li>
                         ))}
                     </ul>
                 </div>
             </div>
             <div>
-                    <form className='embedSubmitField' onSubmit={(e) => { e.preventDefault(); askMessage(); }}>
-                        <input className='text_input' type="text" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Send a message" />
-                        {/* <button type="submit" value="Send">Send</button> */}
-                    </form>
-                </div>
+                <form className='embedSubmitField' onSubmit={(e) => { e.preventDefault(); askMessage(); }}>
+                    <input className='text_input' type="text" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Send a message" />
+                    {/* <button type="submit" value="Send">Send</button> */}
+                </form>
+            </div>
         </div>
     );
 }
