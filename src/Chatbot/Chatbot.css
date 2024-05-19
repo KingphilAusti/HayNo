@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+/* From https://codepen.io/FlorinPop17/pen/bJayqM */
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	/* background: url('https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_1280.jpg'); */
+	background-size: cover;
+	background-position: center	center;
+	background-color: #222;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	min-height: fit-content;
+	font-family: 'Lato', sans-serif;
+	margin: 0 0 50px;
+	overflow: hidden;
+}
+
+h2 {
+  	text-shadow: 1px 1px 2px rgba(0,0,0,1);
+	color: #fff;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.window {
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 25px;
+	box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.7);
+	position: relative;
+}
+
+.chat-container {
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 25px;
+	box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.7);
+	overflow: hidden;
+	padding: 15px;
+	position: relative;
+	width: 520px;
+	max-width: 100%;
+	min-height: 95vh;
+	max-height: 95vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column-reverse;
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
+.chat {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.message {
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 50px;
+	box-shadow: 0px 15px 5px 0px rgba(0,0,0,0.5);
+	position: relative;
+	margin-bottom: 30px;
+}
+
+.message.assistant {
+	padding: 15px 20px 15px 70px;
+}
+
+.message.user {
+	align-self: flex-end;
+	padding: 15px 70px 15px 20px;
+}
+
+.logo {
+	border-radius: 50%;
+	box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.7);
+	object-fit: cover;
+	position: absolute;
+	left: 10px;
+	top: -10px;
+	width: 50px;
+	height: 50px;
+}
+
+.message.user .logo {
+	left: auto;
+	right: 10px;
+}
+
+.message p {
+	margin: 0;
+}
+
+.text_input {
+	font-size: 16px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 10px 15px;
+	width: 100%;
+	border-radius: 25px;
+}
