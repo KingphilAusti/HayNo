@@ -19,6 +19,17 @@ async function processMessage(chatLog, states) {
             case '/searchDatabase':
                 response = 'Database search is not yet implemented.';
                 break;
+            case '/loaddatabase':
+            case '/load':
+                states.vectorStorage.readFromFile();
+                states.setVectorStorage(states.vectorStorage);
+                response = 'Database loaded successfully. Hopefully.';
+                break;
+            case '/savedatabase':
+            case '/save':
+                states.vectorStorage.saveToFile();
+                response = 'Database saving is not yet implemented.';
+                break;
             case '/clear':
                 chatLog.clear();
                 response = 'Chat history has been cleared.';

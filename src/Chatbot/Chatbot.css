@@ -45,10 +45,9 @@ h2 {
 	overflow: hidden;
 	padding: 15px;
 	position: relative;
-	width: 520px;
+	width: 600px;
 	max-width: 100%;
-	min-height: 95vh;
-	max-height: 95vh;
+	height: 95vh;
 	overflow: auto;
 	display: flex;
 	flex-direction: column-reverse;
