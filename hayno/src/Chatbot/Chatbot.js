@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {processMessage} from './scripts/answer';
-import ChatLog from './scripts/chatLog';
+import {processMessage} from './Answer';
+import ChatLog from './ChatLog';
 import './Chatbot.css';
-import userImage from './images/token_user.png'; //Source: https://dakimakuri.com/shop/item/sakurauchi-riko
-import assistantImage from './images/token_assistant.png';
+import userImage from '../images/token_user.png'; //Source: https://dakimakuri.com/shop/item/sakurauchi-riko
+import assistantImage from '../images/token_assistant.png';
 
 function Chatbot() {
     const [message, setMessage] = useState('');
@@ -45,27 +45,25 @@ function Chatbot() {
     }
 
     useEffect( () => {
-        const processOpenAiStream = async (stream) => {
+        const processStringStream = async (stream) => {
             // setAnswer('');
             const newChatLog = new ChatLog(chatLog.log);
-            var currentAnswert = '';
+            var currentAnswer = '';
             if (stream.iterator) {
                 newChatLog.add('assistant', 'Processing...');
                 for await (const part of stream) {
-                    currentAnswert += part.choices[0]?.delta?.content || '';
-                    setUpdateCall(currentAnswert);
-                    newChatLog.updateLastEntry(currentAnswert);
-                    console.log(part.choices[0]?.delta?.content || '');
+                    currentAnswer += part.choices[0]?.delta?.content || '';
+                    setUpdateCall(currentAnswer);
+                    newChatLog.updateLastEntry(currentAnswer);
                     setChatLog(newChatLog);
                 }
             } else {
                 console.error('Stream is not iterable');
-            }
-            return updateCall;
+            };
         };
 
         if (chatLog.first() && chatLog.first().role === 'user') try {
-            processMessage(chatLog).then((response) => {processOpenAiStream(response);})
+            processMessage(chatLog).then((response) => {processStringStream(response);});
         }  catch (error) {
             console.error(error);
         }
@@ -86,14 +84,7 @@ function Chatbot() {
                         ))}
                     </ul>
                 </div>
-                <div>
-                    <form className='embedSubmitField' onSubmit={(e) => { e.preventDefault(); askMessage(); }}>
-                        <input className='text_input' type="text" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Send a message" />
-                        {/* <button type="submit" value="Send">Send</button> */}
-                    </form>
-                </div>
             </div>
-            
             <div>
                     <form className='embedSubmitField' onSubmit={(e) => { e.preventDefault(); askMessage(); }}>
                         <input className='text_input' type="text" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Send a message" />

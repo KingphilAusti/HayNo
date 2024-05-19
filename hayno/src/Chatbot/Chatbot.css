@@ -47,6 +47,7 @@ h2 {
 	position: relative;
 	width: 520px;
 	max-width: 100%;
+	min-height: 95vh;
 	max-height: 95vh;
 	overflow: auto;
 	display: flex;
