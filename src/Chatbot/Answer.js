@@ -35,7 +35,14 @@ async function processMessage(chatLog, states) {
                 response = 'Number of vectors: ' + states.vectorStorage.getNumberOfVectors();
                 break;
             case '/getvector':
-                response = JSON.stringify(states.vectorStorage.getVector(chatLog.first().content.split(' ')[1])).replace(",\"", ',\n\"');
+                let vectorId = chatLog.first().content.split(' ')[1];
+                if (!vectorId) {
+                    response = 'Please provide a vector id.';
+                } else if (vectorId >= states.vectorStorage.getNumberOfVectors()) {
+                    response = 'Vector id out of range. Please provide a value between 0 and ' + (states.vectorStorage.getNumberOfVectors() - 1) + '.';
+                } else {
+                    response = JSON.stringify(states.vectorStorage.getVector(vectorId)).replace(",\"", ',\n\"');
+                }
                 break;
             case '/clear':
                 chatLog.clear();

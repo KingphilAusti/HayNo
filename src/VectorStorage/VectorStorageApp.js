@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import VectorStorageInterface from './VectorStorageInterface';
 
 function VectorStorageApp({vectorStorage, setVectorStorage}) {
-    const [file, setFile] = useState(null);
+    const [documentFile, setDocumentFile] = useState(null);
+    const [databaseFile, setDatabaseFile] = useState(null);
+    const [embeddingSettings, setEmbeddingSettings] = useState({});
 
-    const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
+    const handleDocumentFileChange = (event) => {
+        const newFile = event.target.files[0];
+        setDocumentFile(newFile);
     }
 
-    const handleFileLoad = () => {
-        if (!file) {
+    const handleDocumentFileLoad = () => {
+        if (!documentFile) {
             console.log('No file selected!');
             return;
         }
@@ -16,52 +20,109 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
         const reader = new FileReader();
 
         reader.onload = function(event) {
-            // console.log('File content:', event.target.result);
-
-            var data = reader.result;
-
-            try {
-                if (typeof data === 'object') {
-                    data =  JSON.stringify(data);
-                } else if (typeof data === 'string') {
-                    data =  data;
-                } else {
-                    data = data.toString();
-                }
-            } catch (error) {
-                console.error('Data type not recognized. Converting to string:', error);
+            const data = reader.result;
+            switch (documentFile.type) {
+                case 'application/json':
+                    let jsonData = JSON.parse(data);
+                    vectorStorage.addVector(null, {source: documentFile.name, content: jsonData});
+                    break;
+                case 'text/plain':
+                    vectorStorage.addVector(null, {source: documentFile.name, content: data});
+                    break;
             }
-
-            const loadedData = {source: file.name, content: data};
-
-            vectorStorage.addVector([1,2], loadedData);
-            return loadedData;
         };
 
         reader.onerror = function(event) {
             console.error('File could not be read! Code ' + event.target.error.code);
         };
 
-        reader.readAsText(file);
+        reader.readAsText(documentFile);
     }
+
+    const handleDatabaseFileChange = (event) => {
+        const newFile = event.target.files[0];
+        setDatabaseFile(newFile);
+    }
+
+    const handleDatabaseFileLoad = () => {
+        if (!databaseFile) {
+            console.log('No file selected!');
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const data = reader.result;
+            const newVectorStorageData = JSON.parse(data);
+            for (let entry of newVectorStorageData) {
+                vectorStorage.addVector(entry.vector, entry.data);
+            }
+        };
+
+        reader.onerror = function(event) {
+            console.error('File could not be read! Code ' + event.target.error.code);
+        };
+
+        reader.readAsText(databaseFile);
+    }
+
+    const handleDatabaseSave = () => {
+        // Create a blob of the data
+
+        let data = JSON.stringify(vectorStorage.getVectorStorage());
+        let blob = new Blob([data], {type: 'application/json'});
+
+        // Create a link element
+        let url = window.URL.createObjectURL(blob);
+
+        window.open(url, '_blank');
+    }
+
 
     return (
         <div>
-        <div>
-            <p>Load document file:</p>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleFileLoad}>Load document</button>
-        </div>
-        <div>
-            <p>Load database:</p>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleFileLoad}>Load database</button>
-        </div>
-        <div>
-            <p>Save database:</p>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleFileLoad}>Save database</button>
-        </div>
+            <h1>Vector Storage</h1>
+            <div>
+                <p>Load document file:</p>
+                <input type="file" onChange={handleDocumentFileChange} />
+                <button onClick={handleDocumentFileLoad}>Load document</button>
+                <div>
+                    <h3>Embedding Settings</h3>
+                    <label>
+                        Do Embedding:
+                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doEmbedding: e.target.checked})} />
+                    </label>
+                    <br />
+                    <label>
+                        Do Chunking:
+                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunking: e.target.checked})} />
+                    </label>
+                    <br />
+                    <label>
+                        Do Chunking Per Entry:
+                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunkingPerEntry: e.target.checked})} />
+                    </label>
+                    <br />
+                    <label>
+                        Chunking Size:
+                        <input type="number" onChange={(e) => setEmbeddingSettings({...embeddingSettings, chunkingSize: parseInt(e.target.value)})} />
+                    </label>
+                </div>
+            </div>
+            <div>
+                <p>Load database:</p>
+                <input type="file" onChange={handleDatabaseFileChange} />
+                <button onClick={handleDatabaseFileLoad}>Load database</button>
+            </div>
+            <div>
+                <p>Check/save database:</p>
+                <button onClick={handleDatabaseSave}>Check/save database</button>
+            </div>
+            <div>
+                <h3>Vector Storage Figure</h3>
+                <p>Number of vectors: {vectorStorage.getNumberOfVectors()}</p>
+            </div> 
         </div>
     );
     

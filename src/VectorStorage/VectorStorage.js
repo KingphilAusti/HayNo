@@ -3,7 +3,7 @@ class VectorStorage {
         this.vectorTable = vectorStorage || [];
     }
 
-    get(index) {
+    getEntryAtIndex(index) {
         return this.vectorTable[index];
     }
 
@@ -36,19 +36,6 @@ class VectorStorage {
     addVector(vector, data) {
         return this.vectorTable.push({ vector: vector, data: data });
     }
-
-    saveToFile(filename = 'vectorTable.json') {
-        // const fs = require('fs');
-        // fs.writeFileSync(filename, JSON.stringify(this.vectorTable));
-        console.log('saveToFile not implemented');
-    }
-
-    readFromFile(filename = 'vectorTable.json') {
-        // const fs = require('fs');
-        // this.vectorTable = JSON.parse(fs.readFileSync(filename));   
-        console.log('readFromFile not implemented');
-    }
-
 }
 
 export default VectorStorage;

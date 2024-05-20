@@ -22,15 +22,11 @@ class VectorStorageInterface {
     }
 
     getVectorStorage() {
-        return this.vectorStorage;
+        return this.vectorStorage.vectorTable;
     }
 
-    saveToFile() {
-        this.vectorStorage.saveToFile();
-    }
-
-    readFromFile() {
-        this.vectorStorage.readFromFile();
+    getDatabase() {
+        return this.vectorStorage.getDatabase();
     }
 
     getNumberOfVectors() {
