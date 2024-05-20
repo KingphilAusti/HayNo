@@ -5,7 +5,7 @@ import './Chatbot.css';
 import userImage from '../images/token_user.png'; //Source: https://dakimakuri.com/shop/item/sakurauchi-riko
 import assistantImage from '../images/token_assistant.png';
 
-function Chatbot() {
+function Chatbot({vectorStorage, setVectorStorage}) {
     const [message, setMessage] = useState('');
     const [chatLog, setChatLog] = useState((chatLog) => new ChatLog(chatLog));
     const [updateCall, setUpdateCall] = useState('');
@@ -37,13 +37,16 @@ function Chatbot() {
     }
 
     useEffect( () => { 
-    const states = { message, setMessage, chatLog, setChatLog, updateCall, setUpdateCall};
+    const states = { message, setMessage, 
+                    chatLog, setChatLog, 
+                    updateCall, setUpdateCall, 
+                    vectorStorage, setVectorStorage};
         if (chatLog.first() && chatLog.first().role === 'user') try {
             processMessage(chatLog, states);
         }  catch (error) {
             console.error(error);
         }
-    }, [message, chatLog, updateCall]);
+    }, [message, chatLog, updateCall, vectorStorage]);
 
     return (
         <div className='window'>
@@ -51,9 +54,9 @@ function Chatbot() {
                 <div id="chat">
                     <ul className='chat'>
                         {chatLog.log.map((msg, index) => (
-                            <li className={alignMessage(msg.role)}>
+                            <li key={index} className={alignMessage(msg.role)}>
                                 <img className="logo" src={getAvatar(msg.role)} alt=""></img>
-                                <p key={index}>
+                                <p>
                                     {msg.content}
                                 </p>
                             </li>

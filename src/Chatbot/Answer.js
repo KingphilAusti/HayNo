@@ -17,7 +17,35 @@ async function processMessage(chatLog, states) {
                 break;
             case '/search':
             case '/searchDatabase':
-                response = 'Database search is not yet implemented.';
+                let query = chatLog.first().content.replace('/search', '').replace('/searchDatabase', '').trim();
+                let queryResult = await states.vectorStorage.searchDatabase(query);
+                query = getQueryFromNearestNeighbors(query, queryResult);
+                return await getAnswerFromOpenAI(query).then((response) => { return processStringStream(response, states); });
+                break;
+            case '/loaddatabase':
+            case '/load':
+                states.vectorStorage.readFromFile();
+                states.setVectorStorage(states.vectorStorage);
+                response = 'Database loaded successfully. Hopefully.';
+                break;
+            case '/savedatabase':
+            case '/save':
+                states.vectorStorage.saveToFile();
+                response = 'Database saving is not yet implemented.';
+                break;
+            case '/getnumberofvectors':
+            case '/size':
+                response = 'Number of vectors: ' + states.vectorStorage.getNumberOfVectors();
+                break;
+            case '/getvector':
+                let vectorId = chatLog.first().content.split(' ')[1];
+                if (!vectorId) {
+                    response = 'Please provide a vector id.';
+                } else if (vectorId >= states.vectorStorage.getNumberOfVectors()) {
+                    response = 'Vector id out of range. Please provide a value between 0 and ' + (states.vectorStorage.getNumberOfVectors() - 1) + '.';
+                } else {
+                    response = JSON.stringify(states.vectorStorage.getVector(vectorId)).replace(",\"", ',\n\"');
+                }
                 break;
             case '/clear':
                 chatLog.clear();
@@ -44,6 +72,30 @@ async function getGeneralAnswerFromOpenAI(chatLog) {
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: chatLog.get(),
+            stream: true,
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+        return 'Error occurred while generating.';
+    }
+}
+
+function getQueryFromNearestNeighbors(question, nearestNeighbors) {
+    const introduction = 'Use the below entries to answer the subsequent question. If the answer cannot be found in the articles, write "I could not find an answer."'
+    let message = introduction
+    for (let nearestNeighbor of nearestNeighbors) {
+        let next_article = '\n\n' + nearestNeighbor.source + ':\n\n' + nearestNeighbor.entry.content.content + '\n\n';
+        message += next_article
+    }
+    return message + "\n\nQuestion: " + question
+}
+
+async function getAnswerFromOpenAI(query) {
+    try {
+        const response = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'system', content: 'You are a friendly assistant.' }, { role: 'user', content: query }],
             stream: true,
         });
         return response;
