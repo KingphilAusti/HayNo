@@ -11,14 +11,8 @@ class VectorStorage {
         return this.vectorTable[index].data;
     }
 
-    set(vector, data) {
-        if (!vector || !data) {
-            throw new Error('Vector and data length mismatch');
-        }
-        this.vectorTable.push({
-            index: this.vectorTable.length,
-            vector: vector,
-            data: data})
+    size() {
+        return this.vectorTable.length;
     }
 
     getNearestNeighbors(vector, k) {
@@ -37,6 +31,10 @@ class VectorStorage {
             throw new Error('Vector length mismatch');
         }
         return Math.sqrt(v1.reduce((acc, val, i) => acc + Math.pow(val - v2[i], 2), 0));
+    }
+
+    addVector(vector, data) {
+        this.vectorTable.push({ vector: vector, data: data });
     }
 
     saveToFile(filename = 'vectorTable.json') {

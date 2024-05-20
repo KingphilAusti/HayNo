@@ -30,6 +30,10 @@ async function processMessage(chatLog, states) {
                 states.vectorStorage.saveToFile();
                 response = 'Database saving is not yet implemented.';
                 break;
+            case '/getnumberofvectors':
+            case '/size':
+                response = 'Number of vectors: ' + states.vectorStorage.getNumberOfVectors();
+                break;
             case '/clear':
                 chatLog.clear();
                 response = 'Chat history has been cleared.';

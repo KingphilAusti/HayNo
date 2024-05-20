@@ -5,8 +5,12 @@ class VectorStorageInterface {
         this.vectorStorage = vectorStorage || new VectorStorage();
     }
 
-    saveVector(vector, data) {
+    addVectorSet(vector, data) {
         this.vectorStorage.set(vector, data);
+    }
+
+    addVector(id, vector) {
+        this.vectorStorage.addVector(id, vector);
     }
 
     getVector(id) {
@@ -27,6 +31,10 @@ class VectorStorageInterface {
 
     readFromFile() {
         this.vectorStorage.readFromFile();
+    }
+
+    getNumberOfVectors() {
+        return this.vectorStorage.size();
     }
 }
 

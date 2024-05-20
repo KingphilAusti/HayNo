@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function VectorStorageApp() {
+function VectorStorageApp({vectorStorage, setVectorStorage}) {
     const [file, setFile] = useState(null);
 
     const handleFileChange = (event) => {
@@ -26,6 +26,7 @@ function VectorStorageApp() {
         reader.readAsText(file);
 
         const loadedData = JSON.parse(reader.result);
+        vectorStorage.addVector([1,2], loadedData);
         return loadedData;
     }
 

@@ -4,13 +4,11 @@ import ChatLog from './ChatLog';
 import './Chatbot.css';
 import userImage from '../images/token_user.png'; //Source: https://dakimakuri.com/shop/item/sakurauchi-riko
 import assistantImage from '../images/token_assistant.png';
-import VectorStorageInterface from '../VectorStorage/VectorStorageInterface';
 
-function Chatbot() {
+function Chatbot({vectorStorage, setVectorStorage}) {
     const [message, setMessage] = useState('');
     const [chatLog, setChatLog] = useState((chatLog) => new ChatLog(chatLog));
     const [updateCall, setUpdateCall] = useState('');
-    const [vectorStorage, setVectorStorage] = useState((vectorStorage) => new VectorStorageInterface(vectorStorage));
 
     const askMessage = () => {
         try {
