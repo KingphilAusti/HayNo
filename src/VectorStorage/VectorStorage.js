@@ -8,7 +8,7 @@ class VectorStorage {
     }
 
     getData(index) {
-        return this.vectorTable[index].data;
+        return this.vectorTable[index].content;
     }
 
     size() {
@@ -18,8 +18,8 @@ class VectorStorage {
     getNearestNeighbors(vector, k) {
         const distances = this.vectorTable.map((v) => {
             return {
-                index: v.index,
-                distance: this.__euclideanDistance(vector, v.vector)
+                distance: this.__euclideanDistance(vector, v.vector),
+                entry: v
             }
         });
         distances.sort((a, b) => a.distance - b.distance);
@@ -33,8 +33,8 @@ class VectorStorage {
         return Math.sqrt(v1.reduce((acc, val, i) => acc + Math.pow(val - v2[i], 2), 0));
     }
 
-    addVector(vector, data) {
-        return this.vectorTable.push({ vector: vector, data: data });
+    addVector(vector, content) {
+        return this.vectorTable.push({ vector: vector, content: content });
     }
 }
 

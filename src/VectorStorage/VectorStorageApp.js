@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import VectorStorageInterface from './VectorStorageInterface';
+import { enumBooleanBody } from '@babel/types';
 
 function VectorStorageApp({vectorStorage, setVectorStorage}) {
     const [documentFile, setDocumentFile] = useState(null);
@@ -19,16 +20,16 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
 
         const reader = new FileReader();
 
-        reader.onload = function(event) {
+        reader.onload = async function(event) {
             const data = reader.result;
-            switch (documentFile.type) {
-                case 'application/json':
-                    let jsonData = JSON.parse(data);
-                    vectorStorage.addVector(null, {source: documentFile.name, content: jsonData});
-                    break;
-                case 'text/plain':
-                    vectorStorage.addVector(null, {source: documentFile.name, content: data});
-                    break;
+            const content = documentFile.type === 'application/json' ? JSON.parse(data) : data;
+            if (embeddingSettings.doEmbedding) {
+                const embeddedContent = await vectorStorage.getEmbedding(content, embeddingSettings);
+                for (let entry of embeddedContent) {
+                    vectorStorage.addVector(entry.vector, {source: {document: documentFile.name, key: entry.key}, content: entry.content});
+                }
+            } else {
+                vectorStorage.addVector(null, {source: documentFile.name, content: content});
             }
         };
 
@@ -56,7 +57,7 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
             const data = reader.result;
             const newVectorStorageData = JSON.parse(data);
             for (let entry of newVectorStorageData) {
-                vectorStorage.addVector(entry.vector, entry.data);
+                vectorStorage.addVector(entry.vector, entry.content);
             }
         };
 

@@ -17,7 +17,10 @@ async function processMessage(chatLog, states) {
                 break;
             case '/search':
             case '/searchDatabase':
-                response = 'Database search is not yet implemented.';
+                let query = chatLog.first().content.replace('/search', '').replace('/searchDatabase', '').trim();
+                let queryResult = await states.vectorStorage.searchDatabase(query);
+                query = getQueryFromNearestNeighbors(query, queryResult);
+                return await getAnswerFromOpenAI(query).then((response) => { return processStringStream(response, states); });
                 break;
             case '/loaddatabase':
             case '/load':
@@ -69,6 +72,30 @@ async function getGeneralAnswerFromOpenAI(chatLog) {
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: chatLog.get(),
+            stream: true,
+        });
+        return response;
+    } catch (error) {
+        console.error(error);
+        return 'Error occurred while generating.';
+    }
+}
+
+function getQueryFromNearestNeighbors(question, nearestNeighbors) {
+    const introduction = 'Use the below entries to answer the subsequent question. If the answer cannot be found in the articles, write "I could not find an answer."'
+    let message = introduction
+    for (let nearestNeighbor of nearestNeighbors) {
+        let next_article = '\n\n' + nearestNeighbor.source + ':\n\n' + nearestNeighbor.entry.content.content + '\n\n';
+        message += next_article
+    }
+    return message + "\n\nQuestion: " + question
+}
+
+async function getAnswerFromOpenAI(query) {
+    try {
+        const response = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'system', content: 'You are a friendly assistant.' }, { role: 'user', content: query }],
             stream: true,
         });
         return response;
