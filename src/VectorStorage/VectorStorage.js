@@ -34,7 +34,7 @@ class VectorStorage {
     }
 
     addVector(vector, data) {
-        this.vectorTable.push({ vector: vector, data: data });
+        return this.vectorTable.push({ vector: vector, data: data });
     }
 
     saveToFile(filename = 'vectorTable.json') {

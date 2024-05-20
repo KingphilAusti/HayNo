@@ -34,6 +34,9 @@ async function processMessage(chatLog, states) {
             case '/size':
                 response = 'Number of vectors: ' + states.vectorStorage.getNumberOfVectors();
                 break;
+            case '/getvector':
+                response = JSON.stringify(states.vectorStorage.getVector(chatLog.first().content.split(' ')[1])).replace(",\"", ',\n\"');
+                break;
             case '/clear':
                 chatLog.clear();
                 response = 'Chat history has been cleared.';

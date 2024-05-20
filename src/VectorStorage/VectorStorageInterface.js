@@ -14,11 +14,11 @@ class VectorStorageInterface {
     }
 
     getVector(id) {
-        this.vectorStorage.get(id);
+        return this.vectorStorage.get(id);
     }
 
     getNearestNeighbors(vector, k) {
-        this.vectorStorage.getNearestNeighbors(vector, k);
+        return this.vectorStorage.getNearestNeighbors(vector, k);
     }
 
     getVectorStorage() {

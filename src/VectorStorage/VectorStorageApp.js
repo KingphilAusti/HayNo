@@ -16,7 +16,26 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
         const reader = new FileReader();
 
         reader.onload = function(event) {
-            console.log('File content:', event.target.result);
+            // console.log('File content:', event.target.result);
+
+            var data = reader.result;
+
+            try {
+                if (typeof data === 'object') {
+                    data =  JSON.stringify(data);
+                } else if (typeof data === 'string') {
+                    data =  data;
+                } else {
+                    data = data.toString();
+                }
+            } catch (error) {
+                console.error('Data type not recognized. Converting to string:', error);
+            }
+
+            const loadedData = {source: file.name, content: data};
+
+            vectorStorage.addVector([1,2], loadedData);
+            return loadedData;
         };
 
         reader.onerror = function(event) {
@@ -24,10 +43,6 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
         };
 
         reader.readAsText(file);
-
-        const loadedData = JSON.parse(reader.result);
-        vectorStorage.addVector([1,2], loadedData);
-        return loadedData;
     }
 
     return (
