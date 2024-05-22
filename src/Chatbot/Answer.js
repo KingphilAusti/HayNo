@@ -70,7 +70,7 @@ async function getAnswer(chatLog) {
 async function getGeneralAnswerFromOpenAI(chatLog) {
     try {
         const response = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: process.env.REACT_APP_COMPLETION_MODEL,
             messages: chatLog.get(),
             stream: true,
         });
@@ -94,7 +94,7 @@ function getQueryFromNearestNeighbors(question, nearestNeighbors) {
 async function getAnswerFromOpenAI(query) {
     try {
         const response = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: process.env.REACT_APP_COMPLETION_MODEL,
             messages: [{ role: 'system', content: 'You are a friendly assistant.' }, { role: 'user', content: query }],
             stream: true,
         });
