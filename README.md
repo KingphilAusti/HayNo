@@ -21,6 +21,9 @@ Images are not supported right now.
 
 # .env
 Set API Key for OpenAI here like "REACT_APP_OPENAI_API_KEY=". 
+Set the rest like
+REACT_APP_EMBEDDING_MODEL="text-embedding-3-small"
+REACT_APP_COMPLETION_MODEL="gpt-3.5-turbo"
 
 # Known bugs
 - On Firefox: When saving the database the download fails. Clicking the download again restarts it, which works. 
