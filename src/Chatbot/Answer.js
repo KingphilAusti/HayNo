@@ -21,7 +21,6 @@ async function processMessage(chatLog, states) {
                 let queryResult = await states.vectorStorage.searchDatabase(query);
                 query = getQueryFromNearestNeighbors(query, queryResult);
                 return await getAnswerFromOpenAI(query).then((response) => { return processStringStream(response, states); });
-                break;
             case '/loaddatabase':
             case '/load':
                 states.vectorStorage.readFromFile();
