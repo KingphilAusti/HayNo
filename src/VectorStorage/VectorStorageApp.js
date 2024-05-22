@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import VectorStorageInterface from './VectorStorageInterface';
-import { enumBooleanBody } from '@babel/types';
 
 function VectorStorageApp({vectorStorage, setVectorStorage}) {
     const [documentFile, setDocumentFile] = useState(null);
