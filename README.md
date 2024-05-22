@@ -20,10 +20,13 @@ Chat is a direct connection to chatGPT. You can chat normally and use some comma
 Images are not supported right now.
 
 # .env
-Set API Key for OpenAI here like "REACT_APP_OPENAI_API_KEY=". 
-Set the rest like
+Set the .env like this:
+
+```
+REACT_APP_OPENAI_API_KEY=<your API Key>
 REACT_APP_EMBEDDING_MODEL="text-embedding-3-small"
 REACT_APP_COMPLETION_MODEL="gpt-3.5-turbo"
+```
 
 # Known bugs
 - On Firefox: When saving the database the download fails. Clicking the download again restarts it, which works. 
@@ -33,5 +36,6 @@ REACT_APP_COMPLETION_MODEL="gpt-3.5-turbo"
 # Thanks <3
 Style from 
 From https://codepen.io/FlorinPop17/pen/bJayqM
+
 Question Prompt from
 https://cookbook.openai.com/examples/question_answering_using_embeddings
