@@ -96,13 +96,13 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
                     </label>
                     <br />
                     <label>
-                        Do Chunking:
-                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunking: e.target.checked})} />
+                        Do Embedding Per JSON Entry:
+                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunkingPerEntry: e.target.checked})} />
                     </label>
                     <br />
                     <label>
-                        Do Chunking Per Entry:
-                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunkingPerEntry: e.target.checked})} />
+                        Do Chunking:
+                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunking: e.target.checked})} />
                     </label>
                     <br />
                     <label>
