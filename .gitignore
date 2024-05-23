@@ -25,3 +25,6 @@ yarn-error.log*
 
 # Downloaded html file folders
 /Examples/htmls
+dataPreperation/ImageGeneration.ipynb
+Examples/StarfinderRulebook.json
+dataPreperation/output.json

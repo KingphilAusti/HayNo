@@ -82,7 +82,7 @@ class VectorStorageInterface {
         if (embeddingSettings.doChuking) {
             console.error('Chunking is not yet implemented.');
         } else {
-            console.log(process.env.REACT_APP_EMBEDDING_MODEL)
+            console.log("Creating embedding for: " + key)
             const response = await openai.embeddings.create({
                 model: process.env.REACT_APP_EMBEDDING_MODEL,
                 input: content,
