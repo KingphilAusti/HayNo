@@ -28,3 +28,4 @@ yarn-error.log*
 dataPreperation/ImageGeneration.ipynb
 Examples/StarfinderRulebook.json
 dataPreperation/output.json
+.venv
