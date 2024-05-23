@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function VectorStorageApp({vectorStorage, setVectorStorage}) {
     const [documentFile, setDocumentFile] = useState(null);
     const [databaseFile, setDatabaseFile] = useState(null);
-    const [embeddingSettings, setEmbeddingSettings] = useState({});
+    const [embeddingSettings, setEmbeddingSettings] = useState({ doEmbedding: false, doChunking: false, doChunkingPerEntry: false, chunkingSize: 0});
+    const [updateCall, setUpdateCall] = useState('');
 
     const handleDocumentFileChange = (event) => {
         const newFile = event.target.files[0];
@@ -78,6 +79,13 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
         window.open(url, '_blank');
     }
 
+    useEffect(() => {
+        console.log('Embedding settings changed: ', embeddingSettings);
+        if (embeddingSettings.doChunking) {
+            console.error('Chunking is not yet implemented.');
+        }
+    }, [embeddingSettings]);
+
 
     return (
         <div>
@@ -89,18 +97,18 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
                 <div>
                     <h3>Embedding Settings</h3>
                     <label>
-                        Do Embedding:
-                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doEmbedding: e.target.checked})} />
+                        Create Embeddings:
+                        <input className="checkbox-embedding" type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doEmbedding: e.target.checked})} />
                     </label>
                     <br />
                     <label>
                         Do Embedding Per JSON Entry:
-                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunkingPerEntry: e.target.checked})} />
+                        <input className="checkbox-chunkingperentry" type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunkingPerEntry: e.target.checked})} />
                     </label>
                     <br />
                     <label>
                         Do Chunking:
-                        <input type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunking: e.target.checked})} />
+                        <input className="checkbox-chunking" type="checkbox" onChange={(e) => setEmbeddingSettings({...embeddingSettings, doChunking: e.target.checked})} />
                     </label>
                     <br />
                     <label>
@@ -110,12 +118,12 @@ function VectorStorageApp({vectorStorage, setVectorStorage}) {
                 </div>
             </div>
             <div>
-                <p>Load database:</p>
+                <p>Database loading:</p>
                 <input type="file" onChange={handleDatabaseFileChange} />
                 <button onClick={handleDatabaseFileLoad}>Load database</button>
             </div>
             <div>
-                <p>Check/save database:</p>
+                <p>Database saving:</p>
                 <button onClick={handleDatabaseSave}>Check/save database</button>
             </div>
             <div>

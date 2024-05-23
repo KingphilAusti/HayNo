@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "openai": "^4.47.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -15,8 +12,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "testJest": "react-scripts test",
+    "test": "mocha ./**/*.test.[jt]s?(x)",
+    "testVS": "mocha ./src/VectorStorage/VectorStorage.test.js",
+    "eject": "react-scripts eject",
+    "test:unit": "mocha --config .mocharc.js 'src/**/*.test.{mjs,js,ts,tsx}' 'test/utils/**/*.test.{js,ts,tsx}'"
   },
   "browserslist": {
     "production": [
@@ -29,5 +29,19 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/register": "^7.23.7",
+    "@sinonjs/referee-sinon": "^12.0.0",
+    "@testing-library/react": "^15.0.7",
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.6",
+    "chai": "^5.1.1",
+    "global-jsdom": "^24.0.0",
+    "ignore-styles": "^5.0.1",
+    "jsverify": "^0.8.4",
+    "knuth-shuffle": "^1.0.8",
+    "mocha": "^10.4.0",
+    "ts-node": "^10.9.2"
   }
 }

@@ -39,3 +39,6 @@ From https://codepen.io/FlorinPop17/pen/bJayqM
 
 Question Prompt from
 https://cookbook.openai.com/examples/question_answering_using_embeddings
+
+Mocha Setup with
+https://dev.to/rivertwilight/using-mocha-chai-test-you-react-application-30pc
